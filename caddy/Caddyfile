@@ -8,7 +8,10 @@
 }
 
 api.nzbirddatabase.com {
-	reverse_proxy birds-web:8000
+	reverse_proxy birds-web:8000 {
+		# Django's rate limiter reads X-Forwarded-For; send only the resolved visitor IP.
+		header_up X-Forwarded-For {client_ip}
+	}
 	log
 }
 
