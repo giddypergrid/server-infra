@@ -7,6 +7,11 @@
 	}
 }
 
+api.nzbirddatabase.com {
+	reverse_proxy birds-web:8000
+	log
+}
+
 api.nzfineprint.com {
 	reverse_proxy nzfineprint-app:8000 {
 		# Overwritten on every request, so a visitor can't spoof it.
