@@ -1,0 +1,21 @@
+# Shared reverse proxy: HTTPS for every site on the host. Apps join the external `web`
+# network and never publish ports; Caddy reaches them by container name.
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]        # the only container that binds host ports
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data               # HTTPS certificates, kept across restarts
+      - caddy_config:/config
+    networks: [web]
+
+networks:
+  web:
+    external: true
+
+volumes:
+  caddy_data:
+  caddy_config:
